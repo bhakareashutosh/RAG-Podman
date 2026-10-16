@@ -487,15 +487,22 @@ action_setup() {
     echo -e "  ├────────────────────────────────────────────────────────────────────────┤"
     echo -e "  │${C_RESET}  ADK REST API Server : ${C_AQUA}http://localhost:${PORT}${C_GREEN}                                 │"
     echo -e "  │${C_RESET}  API Health Endpoint : ${C_AQUA}http://localhost:${PORT}/list-apps${C_GREEN}                       │"
+    echo -e "  │${C_RESET}  Swagger API Docs    : ${C_AQUA}http://localhost:${PORT}/docs${C_GREEN}                            │"
     echo -e "  │${C_RESET}  ChromaDB Port       : ${C_PURPLE}8000 (Internal & Secure in Pod)${C_GREEN}                  │"
     echo -e "  │${C_RESET}  Container User      : ${C_YELLOW}UID 1001 (Rootless, Non-Root)${C_GREEN}                   │"
     echo -e "  ├────────────────────────────────────────────────────────────────────────┤"
-    echo -e "  │${C_RESET}  ${C_BOLD}Next Steps:${C_RESET}                                                           ${C_GREEN}│"
-    echo -e "  │${C_RESET}    • Interactive Chat:      ${C_AQUA}./run.sh chat${C_RESET}                                 ${C_GREEN}│"
-    echo -e "  │${C_RESET}    • Run Evaluation Suite:  ${C_AQUA}./run.sh test${C_RESET}                                 ${C_GREEN}│"
-    echo -e "  │${C_RESET}    • Stream Container Logs: ${C_AQUA}./run.sh logs${C_RESET}                                 ${C_GREEN}│"
-    echo -e "  │${C_RESET}    • Stop Workload:         ${C_AQUA}./run.sh stop${C_RESET}                                 ${C_GREEN}│"
+    echo -e "  │${C_RESET}  ${C_BOLD}How to Chat with the Agent:${C_RESET}                                            ${C_GREEN}│"
+    echo -e "  │${C_RESET}    • Interactive Chat : ${C_AQUA}Option [2]${C_RESET} in menu or ${C_AQUA}./run.sh chat${C_RESET}           ${C_GREEN}│"
+    echo -e "  │${C_RESET}    • Quick CLI Query  : ${C_AQUA}./run.sh query \"<question>\"${C_RESET}                   ${C_GREEN}│"
+    echo -e "  │${C_RESET}    • REST API (HTTP)  : ${C_AQUA}POST http://localhost:${PORT}/run${C_RESET}                         ${C_GREEN}│"
+    echo -e "  │${C_RESET}    • Evaluation Suite : ${C_AQUA}Option [3]${C_RESET} in menu or ${C_AQUA}./run.sh test${C_RESET}           ${C_GREEN}│"
     echo -e "  ╰────────────────────────────────────────────────────────────────────────╯${C_RESET}\n"
+
+    echo -ne "  ${C_YELLOW}▶ Launch Interactive Chat now? (Y/n): ${C_RESET}"
+    read -r go_chat
+    if [[ -z "$go_chat" || "$go_chat" =~ ^[yY]$ ]]; then
+        action_chat
+    fi
 }
 
 action_up() {
@@ -528,6 +535,12 @@ action_up() {
     action_query "How many days of annual leave do I get, and how many can I carry forward?"
 
     echo -e "\n${C_GREEN}${C_BOLD}✨ WORKSPACE IS READY & RUNNING!${C_RESET}\n"
+
+    echo -ne "  ${C_YELLOW}▶ Launch Interactive Chat now? (Y/n): ${C_RESET}"
+    read -r go_chat
+    if [[ -z "$go_chat" || "$go_chat" =~ ^[yY]$ ]]; then
+        action_chat
+    fi
 }
 
 action_doctor() {
