@@ -2,8 +2,20 @@
 .SYNOPSIS
     Interactive & Animated Runner for Google ADK + RAG + Podman Workshop (Windows Launcher).
 .DESCRIPTION
-    Launches the interactive TUI console dashboard with animated spinners, status cards,
-    typewriter chat interface, and automated Gemini API key configuration.
+    Launches the interactive TUI console dashboard or CLI commands with animated spinners, status cards,
+    typewriter chat interface, and automated Gemini API key configuration via WSL2 / Podman.
+.EXAMPLE
+    .\run.ps1
+    Launches the interactive Control Console menu.
+.EXAMPLE
+    .\run.ps1 setup
+    Runs complete automated standard setup (prereqs, secrets, image build, pod, ingest, verify).
+.EXAMPLE
+    .\run.ps1 doctor
+    Runs system pre-flight checks and diagnostics.
+.EXAMPLE
+    .\run.ps1 query "How many days leave do I get?"
+    Directly asks the RAG agent a question.
 #>
 
 [CmdletBinding()]
@@ -32,8 +44,17 @@ if (-not (Test-Path (Join-Path $ScriptDir "run.sh")) -and (Test-Path (Join-Path 
 $HasWsl = [bool](Get-Command "wsl.exe" -ErrorAction SilentlyContinue)
 
 if ($HasWsl) {
+    # Detect available WSL distribution
+    $wslDistro = "Ubuntu"
+    try {
+        $distros = wsl.exe -l -q 2>$null | ForEach-Object { $_.Trim().Replace("`0", "") } | Where-Object { $_ -ne "" }
+        if ($distros -and -not ($distros -contains "Ubuntu")) {
+            $wslDistro = $distros[0]
+        }
+    } catch {}
+
     # Ensure LF line endings and executable bit
-    wsl.exe -d Ubuntu -e bash -c "sed -i 's/\r$//' '$shScript' 2>/dev/null; chmod +x '$shScript' 2>/dev/null"
+    wsl.exe -d $wslDistro -e bash -c "sed -i 's/\r$//' '$shScript' 2>/dev/null; chmod +x '$shScript' 2>/dev/null"
 
     # Forward environment variable if set in Windows
     $envPrefix = ""
@@ -43,10 +64,10 @@ if ($HasWsl) {
 
     if ($ScriptArgs -and $ScriptArgs.Count -gt 0) {
         $escapedArgs = ($ScriptArgs | ForEach-Object { "'$_'" }) -join " "
-        wsl.exe -d Ubuntu -e bash -c "$envPrefix '$shScript' $escapedArgs"
+        wsl.exe -d $wslDistro -e bash -c "$envPrefix '$shScript' $escapedArgs"
     } else {
         # Launch interactive menu in WSL
-        wsl.exe -d Ubuntu -e bash -c "$envPrefix '$shScript'"
+        wsl.exe -d $wslDistro -e bash -c "$envPrefix '$shScript'"
     }
 } else {
     Write-Host "[ERROR] WSL2 is required to run rootless Podman on Windows." -ForegroundColor Red

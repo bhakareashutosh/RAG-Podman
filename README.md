@@ -58,15 +58,17 @@ Running without flags launches the **Interactive Control Console**:
                  ✦ AGENT DEVELOPMENT KIT + PODMAN ✦
 
   CONTROL CONSOLE MENU:
-  [1] 🚀  Launch Complete Stack   (Build + Secrets + Deploy + Ingest + Verify)
-  [2] 💬  Interactive Chat        (Ask questions from knowledge base)
-  [3] 🧪  Run Evaluation Suite    (3 standard workshop test scenarios)
-  [4] 📊  Inspect Cluster Status  (Pods, containers, volumes, secrets)
-  [5] 📜  Stream Container Logs   (Agent API & ChromaDB logs)
-  [6] 📚  Re-index / Ingest Docs  (Re-chunk & embed documents into ChromaDB)
-  [7] ⚙️   Change Deployment Mode (kube / pod / quadlet)
-  [8] 🛑  Stop Running Workload   (Stop pod without losing vector data)
-  [9] 🧹  Deep Clean All          (Purge pod, volumes, secrets, and images)
+  [1] 🛠️   Standard Setup & Launch  (Prereqs + Secrets + Build + Deploy + Ingest + Verify)
+  [2] 💬  Interactive Chat         (Ask questions from knowledge base)
+  [3] 🧪  Run Evaluation Suite     (3 standard workshop test scenarios)
+  [4] 📊  Inspect Cluster Status   (Pods, containers, volumes, secrets, health)
+  [5] 📜  Stream Container Logs    (Agent API & ChromaDB logs)
+  [6] 📚  Re-index / Ingest Docs   (Re-chunk & embed documents into ChromaDB)
+  [7] 🩺  Run System Doctor        (Verify Podman, rootless, versions, tools)
+  [8] 🐍  Setup Local Dev (.venv)  (Module 1: requirements.txt for local dev)
+  [9] ⚙️   Change Deployment Mode  (Current: kube)
+  [10]🛑  Stop Running Workload   (Stop pod without losing vector data)
+  [11]🧹  Deep Clean All           (Purge pod, volumes, secrets, and images)
   [0] 🚪  Exit
 ```
 
@@ -226,6 +228,8 @@ The automated runner can also be driven directly via command-line flags:
 
 | Action | PowerShell Command | Bash Command | Description |
 | :--- | :--- | :--- | :--- |
+| **Standard Setup** | `.\run.ps1 setup` | `./run.sh setup` | Complete automated setup: prereqs, secrets, image build, pod, ingestion & verification |
+| **System Diagnostics** | `.\run.ps1 doctor` | `./run.sh doctor` | Inspects environment prerequisites, rootless mode, versions, and cluster status |
 | **Launch Stack** | `.\run.ps1 up` | `./run.sh up` | Builds image, configures secrets, launches pod, and ingests docs |
 | **Ask Question** | `.\run.ps1 query "<text>"` | `./run.sh query "<text>"` | Queries the running agent and prints formatted answer |
 | **Interactive Chat** | `.\run.ps1 chat` | `./run.sh chat` | Opens multi-turn interactive chat loop |
@@ -233,6 +237,7 @@ The automated runner can also be driven directly via command-line flags:
 | **Status** | `.\run.ps1 status` | `./run.sh status` | Displays pod, container, volume, and secret states |
 | **Stream Logs** | `.\run.ps1 logs -Target agent` | `./run.sh logs agent` | Live streams container logs |
 | **Re-ingest Docs** | `.\run.ps1 ingest` | `./run.sh ingest` | Re-indexes documents in `docs/` |
+| **Local Dev (.venv)** | `.\run.ps1 venv` | `./run.sh venv` | Sets up local Python 3 virtual environment (.venv) and requirements |
 | **Stop Workload** | `.\run.ps1 down` | `./run.sh down` | Stops pod without deleting vector data |
 | **Deep Clean** | `.\run.ps1 clean` | `./run.sh clean` | Purges all containers, pods, volumes, secrets, and images |
 

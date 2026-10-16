@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY agents/ ./agents/
 COPY ingest/ ./ingest/
 COPY docs/ ./docs/
+COPY healthcheck.py* ./
 
 # Run as an unprivileged user inside the container too
 RUN useradd --uid 1001 --create-home appuser && chown -R appuser /app
