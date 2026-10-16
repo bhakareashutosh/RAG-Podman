@@ -1,0 +1,4 @@
+# Pin exact versions for production builds (e.g. google-adk==X.Y.Z)
+google-adk
+google-genai
+chromadb-client

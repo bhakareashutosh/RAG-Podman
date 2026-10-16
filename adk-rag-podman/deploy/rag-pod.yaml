@@ -1,0 +1,48 @@
+# Runs with: podman kube play deploy/rag-pod.yaml
+# The same file works on Kubernetes / OpenShift once the image is pushed to a registry.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rag-pod
+  labels:
+    app: rag-agent
+spec:
+  containers:
+    - name: chroma
+      image: docker.io/chromadb/chroma:latest   # pin a version in production
+      volumeMounts:
+        - name: chroma-data
+          mountPath: /data
+    - name: agent
+      image: localhost/rag-agent:1.0
+      ports:
+        - containerPort: 8080
+          hostPort: 8080
+      env:
+        - name: GOOGLE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: gemini-secret
+              key: GOOGLE_API_KEY
+        - name: CHROMA_HOST
+          value: "localhost"
+      resources:
+        limits:
+          memory: "1Gi"
+          cpu: "1"
+      readinessProbe:
+        httpGet:
+          path: /list-apps
+          port: 8080
+        initialDelaySeconds: 10
+        periodSeconds: 15
+      livenessProbe:
+        httpGet:
+          path: /list-apps
+          port: 8080
+        initialDelaySeconds: 30
+        periodSeconds: 30
+  volumes:
+    - name: chroma-data
+      persistentVolumeClaim:
+        claimName: chroma-data

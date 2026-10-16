@@ -1,0 +1,15 @@
+# Copy to ~/.config/containers/systemd/rag.kube, then:
+#   systemctl --user daemon-reload && systemctl --user start rag
+# %h expands to your home directory; adjust if the project lives elsewhere.
+[Unit]
+Description=ADK RAG agent pod (Podman Quadlet)
+After=network-online.target
+
+[Kube]
+Yaml=%h/adk-rag-podman/deploy/rag-pod.yaml
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

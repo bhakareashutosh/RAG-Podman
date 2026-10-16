@@ -1,0 +1,5 @@
+# Preserve LF line endings for shell scripts and container files
+* text=auto
+*.sh text eol=lf
+*.kube text eol=lf
+Containerfile text eol=lf

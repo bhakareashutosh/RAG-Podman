@@ -1,0 +1,87 @@
+# ==============================================================================
+# Git Ignore: Google ADK + RAG + Podman Workshop
+# ==============================================================================
+
+# --- Secrets & Sensitive Data (CRITICAL) ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*secret*.local.yaml
+tmp_secret*
+/tmp/
+
+# --- Workshop Archives, Guides & PDFs ---
+*.zip
+*.pdf
+*Lab_Guide*.md
+*lab_guide*.md
+ADK_RAG_Podman_Lab_Guide.md
+ADK_RAG_Podman_Workshop_Step_by_Step.pdf
+
+# --- Python & Virtual Environments ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env/
+
+# --- Vector Database & Storage ---
+/data/
+/chroma-data/
+*.sqlite3
+*.sqlite3-journal
+chroma-backup.tar
+*.tar
+
+# --- Generated Kubernetes / Podman Artifacts ---
+generated.yaml
+*.kube.generated
+
+# --- Logs & Diagnostics ---
+*.log
+*.pid
+
+# --- Operating System Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- IDE & Editor Settings ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
